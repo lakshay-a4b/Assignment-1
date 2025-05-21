@@ -30,7 +30,7 @@ export const createOrderSync = async (userId) => {
     0
   );
 
-  const paymentResult = processPayment({ userId, orderItems, totalAmount });
+  const paymentResult = processPayment({ userId, cartItems, totalAmount });
 
   const order = {
     id: orderIdCounter++,
