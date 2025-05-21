@@ -1,4 +1,4 @@
-import * as userRepo from '../repositories/userRepository.js';
+import * as userRepo from '../repositories/UserRepository.js';
 import { hashPassword, comparePasswords } from '../utils/hashUtil.js';
 import { generateToken } from '../utils/tokenUtil.js';
 

@@ -1,4 +1,3 @@
-// routes/cart.routes.js
 import express from 'express';
 import { addToCart, getCart, removeFromCart } from '../controllers/cartController.js';
 import { authenticateToken } from '../middlewares/authMiddleware.js';
