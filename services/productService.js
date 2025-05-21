@@ -1,0 +1,20 @@
+import * as ProductRepository from '../repositories/ProductRepositoy.js';
+
+export const fetchPaginatedProducts = (page = 1, limit = 5) => {
+  const allProducts = ProductRepository.getAllProducts();
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+
+  const paginated = allProducts.slice(startIndex, endIndex);
+
+  return {
+    products: paginated,
+    total: allProducts.length,
+    page,
+    limit
+  };
+};
+
+export const fetchProductById = (id) => {
+  return ProductRepository.getProductById(id);
+};
