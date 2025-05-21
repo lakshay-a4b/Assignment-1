@@ -1,4 +1,4 @@
-function processPayment(orderDetails) {
+export function processPayment(orderDetails) {
   console.log("Mock payment processed for order:", orderDetails);
   return {
     status: "success",
@@ -6,4 +6,3 @@ function processPayment(orderDetails) {
   };
 }
 
-export default { processPayment };
