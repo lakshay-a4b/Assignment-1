@@ -18,3 +18,15 @@ export const fetchPaginatedProducts = (page = 1, limit = 5) => {
 export const fetchProductById = (id) => {
   return ProductRepository.getProductById(id);
 };
+
+export const createProduct = (product) => {
+  return ProductRepository.createProduct(product);
+}
+
+export const updateProduct = (id, product) => {
+  return ProductRepository.updateProduct(id, product);
+}
+
+export const deleteProduct = (id) => {
+ return ProductRepository.deleteProduct(id);
+}
