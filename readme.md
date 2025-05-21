@@ -25,8 +25,11 @@ API Documentation
             }
 
             Response:
-
             { "message": "User registered successfully" }
+<img width="1061" alt="Screenshot 2025-05-21 at 5 38 49 PM" src="https://github.com/user-attachments/assets/3c0a78bf-e0bd-418c-8464-8945e83cf8a5" />
+
+
+            
             
 
 
@@ -44,6 +47,9 @@ API Documentation
             Response:
 
             { message: "Login successful", token }
+
+<img width="827" alt="Screenshot 2025-05-21 at 5 42 11 PM" src="https://github.com/user-attachments/assets/e9677f96-d531-47e4-a3f2-b75b2b7ebd59" />
+
 
 ---
 
@@ -77,6 +83,9 @@ API Documentation
                 "limit": 2
             }
 
+<img width="815" alt="Screenshot 2025-05-21 at 5 43 40 PM" src="https://github.com/user-attachments/assets/eb05f66d-0c92-41a9-bdff-a25a15cdb12d" />
+
+
 
         Get product by ID
 
@@ -91,6 +100,9 @@ API Documentation
                 "idescription": "OnePlus flagship",
                 "price": 749.99
             }
+<img width="831" alt="Screenshot 2025-05-21 at 5 46 13 PM" src="https://github.com/user-attachments/assets/10a19dcf-ea3e-4a6b-b787-73c526692705" />
+
+
 
 ---
 
@@ -116,6 +128,11 @@ API Documentation
                 ]
             }
 
+<img width="827" alt="Screenshot 2025-05-21 at 5 46 54 PM" src="https://github.com/user-attachments/assets/5d4dd90c-aa12-488a-ac45-3f022bc38f32" />
+
+
+
+
 
         Get Cart
 
@@ -129,6 +146,11 @@ API Documentation
                 ]
             }
 
+<img width="823" alt="Screenshot 2025-05-21 at 5 47 49 PM" src="https://github.com/user-attachments/assets/caf73377-5dc6-4609-aa01-0d8c927be1a5" />
+
+
+            
+
 
         Remove from Cart
 
@@ -140,6 +162,11 @@ API Documentation
                 "message": "Product removed from cart",
                 "cart": []
             }
+<img width="827" alt="Screenshot 2025-05-21 at 5 48 45 PM" src="https://github.com/user-attachments/assets/0464103c-5bc3-4938-9e0c-a8d0633b9974" />
+
+
+
+
 
 ---
 
@@ -171,6 +198,12 @@ API Documentation
                     "createdAt": "2025-05-21T12:19:09.349Z"
                 }
             }
+<img width="829" alt="Screenshot 2025-05-21 at 5 49 16 PM" src="https://github.com/user-attachments/assets/c42bd616-b427-4fad-9efb-7b44a835d94c" />
+
+
+
+
+            
 
 
             Get User Orders (paginated)
@@ -220,3 +253,4 @@ API Documentation
                     "page": 1,
                     "limit": 2
                 }
+<img width="1057" alt="Screenshot 2025-05-21 at 5 50 10 PM" src="https://github.com/user-attachments/assets/7030124c-89b8-4c20-85a9-f4e6131443ed" />
