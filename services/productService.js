@@ -1,4 +1,4 @@
-import * as ProductRepository from '../repositories/ProductRepositoy.js';
+import * as ProductRepository from '../repositories/ProductRepository.js';
 
 export const fetchPaginatedProducts = (page = 1, limit = 5) => {
   const allProducts = ProductRepository.getAllProducts();

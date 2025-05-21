@@ -16,6 +16,7 @@ export const createOrderSync = async (userId) => {
     return {
       productId: product.id,
       name: product.name,
+      image: product.imageURL,
       price: product.price,
       quantity: item.quantity
     };
