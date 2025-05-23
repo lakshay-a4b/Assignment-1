@@ -1,13 +1,36 @@
-import pool from '../config/db.js';
+import pool from "../config/db.js";
 
 export const getAllProducts = async () => {
   try {
-    const query = 'SELECT * FROM products';
+    const query = "SELECT * FROM products";
     const { rows } = await pool.query(query);
     return rows;
   } catch (error) {
-    console.error('Error fetching all products:', error);
-    throw error;
+    console.error("Database error: getAllProducts failed:", error);
+    throw new Error("Failed to fetch all products from database");
+  }
+};
+
+export const getPaginatedProducts = async (limit, offset) => {
+  try {
+    const query = 'SELECT * FROM products ORDER BY "productId" LIMIT $1 OFFSET $2';
+    const { rows } = await pool.query(query, [limit, offset]);
+    return rows;
+  } catch (error) {
+    console.error('Database error: getPaginatedProducts failed:', error);
+    throw new Error('Failed to fetch paginated products');
+  }
+};
+
+
+export const getTotalProductCount = async () => {
+  try {
+    const query = 'SELECT COUNT(*) FROM products';
+    const { rows } = await pool.query(query);
+    return parseInt(rows[0].count, 10);
+  } catch (error) {
+    console.error('Database error: getTotalProductCount failed:', error);
+    throw new Error('Failed to count products');
   }
 };
 
@@ -17,8 +40,8 @@ export const getProductById = async (id) => {
     const { rows } = await pool.query(query, [id]);
     return rows[0] || null;
   } catch (error) {
-    console.error('Error fetching product by ID:', error);
-    throw error;
+    console.error(`Database error: getProductById(${id}) failed:`, error);
+    throw new Error("Failed to fetch product by ID");
   }
 };
 
@@ -33,8 +56,8 @@ export const createProduct = async (product) => {
     const { rows } = await pool.query(query, [name, description, image, price]);
     return rows[0];
   } catch (error) {
-    console.error('Error creating product:', error);
-    throw error;
+    console.error("Database error: createProduct failed:", error);
+    throw new Error("Failed to create product");
   }
 };
 
@@ -47,11 +70,17 @@ export const updateProduct = async (id, product) => {
       WHERE "productId" = $5
       RETURNING *
     `;
-    const { rows } = await pool.query(query, [name, description, image, price, id]);
+    const { rows } = await pool.query(query, [
+      name,
+      description,
+      image,
+      price,
+      id,
+    ]);
     return rows[0] || null;
   } catch (error) {
-    console.error('Error updating product:', error);
-    throw error;
+    console.error(`Database error: updateProduct(${id}) failed:`, error);
+    throw new Error("Failed to update product");
   }
 };
 
@@ -61,7 +90,7 @@ export const deleteProduct = async (id) => {
     const { rows } = await pool.query(query, [id]);
     return rows[0] || null;
   } catch (error) {
-    console.error('Error deleting product:', error);
-    throw error;
+    console.error(`Database error: deleteProduct(${id}) failed:`, error);
+    throw new Error("Failed to delete product");
   }
 };

@@ -1,33 +1,59 @@
 import * as ProductRepository from '../repositories/ProductRepository.js';
 
 export const fetchPaginatedProducts = async (page = 1, limit = 5) => {
-  const allProducts = await ProductRepository.getAllProducts();
-  
-  const startIndex = (page - 1) * limit;
-  const endIndex = startIndex + limit;
-  
-  const paginated = allProducts.slice(startIndex, endIndex);
+  try {
+    const offset = (page - 1) * limit;
 
-  return {
-    products: paginated,
-    total: allProducts.length,
-    page,
-    limit
-  };
+    const [products, total] = await Promise.all([
+      ProductRepository.getPaginatedProducts(limit, offset),
+      ProductRepository.getTotalProductCount()
+    ]);
+
+    return {
+      products,
+      total,
+      page,
+      limit
+    };
+  } catch (error) {
+    console.error("Service error: fetchPaginatedProducts failed:", error);
+    throw new Error("Failed to fetch paginated products");
+  }
 };
 
 export const fetchProductById = async (id) => {
-  return await ProductRepository.getProductById(id);
+  try {
+    const product = await ProductRepository.getProductById(id);
+    return product;
+  } catch (error) {
+    console.error("Error in fetchProductById:", error);
+    throw new Error("Failed to fetch product");
+  }
 };
 
 export const createProduct = async (product) => {
-  return await ProductRepository.createProduct(product);
-}
+  try {
+    return await ProductRepository.createProduct(product);
+  } catch (error) {
+    console.error("Error in createProduct:", error);
+    throw new Error("Failed to create product");
+  }
+};
 
 export const updateProduct = async (id, product) => {
-  return await ProductRepository.updateProduct(id, product);
-}
+  try {
+    return await ProductRepository.updateProduct(id, product);
+  } catch (error) {
+    console.error("Error in updateProduct:", error);
+    throw new Error("Failed to update product");
+  }
+};
 
 export const deleteProduct = async (id) => {
- return await ProductRepository.deleteProduct(id);
-}
+  try {
+    return await ProductRepository.deleteProduct(id);
+  } catch (error) {
+    console.error("Error in deleteProduct:", error);
+    throw new Error("Failed to delete product");
+  }
+};
