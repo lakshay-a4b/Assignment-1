@@ -1,16 +1,16 @@
 import * as ProductService from "../services/productService.js";
 
-export const getAllProducts = (req, res) => {
+export const getAllProducts = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 5;
 
-  const result = ProductService.fetchPaginatedProducts(page, limit);
+  const result = await ProductService.fetchPaginatedProducts(page, limit);
   res.json(result);
 };
 
-export const getProductById = (req, res) => {
+export const getProductById = async (req, res) => {
   const id = parseInt(req.params.id);
-  const product = ProductService.fetchProductById(id);
+  const product = await ProductService.fetchProductById(id);
 
   if (!product) {
     return res.status(404).json({ message: "Product not found" });
@@ -29,16 +29,16 @@ export const getProductByIdSync = (id) => {
 };
 
 export const createProduct = async (req, res) => {
-  const { name, imageURL, description, price } = req.body;
+  const { name, image, description, price } = req.body;
 
-  if (!name || !imageURL || !price || !description) {
+  if (!name || !image || !price || !description) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
     const newProduct = await ProductService.createProduct({
       name,
-      imageURL,
+      image,
       description,
       price,
     });
@@ -52,16 +52,16 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   const id = parseInt(req.params.id);
-  const { name, imageURL, description, price } = req.body;
+  const { name, image, description, price } = req.body;
 
-  if (!name || !price || !imageURL || !description) {
+  if (!name || !price || !image || !description) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
     const updatedProduct = ProductService.updateProduct(id, {
       name,
-      imageURL,
+      image,
       description,
       price,
     });

@@ -19,7 +19,7 @@ API Documentation
             POST /api/users/signup
             Request body:
             {
-                "user_id": "john123",
+                "userID": "john123",
                 "password": "password123",
                 "email": "test@email.com"
             }
@@ -40,7 +40,7 @@ API Documentation
             Request body:
 
             {
-                "user_id": "john123",
+                "userID": "john123",
                 "password": "password123"
             }
 

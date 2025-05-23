@@ -1,10 +1,10 @@
-import {createOrderSync, fetchUserOrders} from '../services/orderService.js';
+import {createOrderService, fetchUserOrders} from '../services/orderService.js';
 
 export const createOrder = async (req, res) => {
-  const userId = req.user.user_id;
+  const userId = req.user.userId;  
 
   try {
-    const order = await createOrderSync(userId);
+    const order = await createOrderService(userId);
     res.status(201).json({
       message: 'Order created successfully',
       order
@@ -15,13 +15,12 @@ export const createOrder = async (req, res) => {
 };
 
 export const getUserOrders = async (req, res) => {
-  const userId = req.user.user_id;
+  const userId = req.user.userId;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 5;
 
   try {
     const result = await fetchUserOrders(userId, page, limit);
-    console.log(result);
     
     res.status(200).json(result);
   } catch (error) {
@@ -30,7 +29,7 @@ export const getUserOrders = async (req, res) => {
 };
 
 export const updateUserOrder = async (req, res) => {
-  const userId = req.user.user_id;
+  const userId = req.user.userID;
   const orderId = parseInt(req.params.id);
   const { status } = req.body;
 

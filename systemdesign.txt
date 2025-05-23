@@ -1,0 +1,34 @@
+tables
+users -
+    userId
+    email
+    password
+
+
+products
+    productid
+    name
+    description
+    image
+    price
+
+cart
+    userId
+    productInfo
+    total value
+
+datatype productInfo
+    productId
+    quantity
+
+
+orders
+    orderId
+    paymentID
+    userId
+    productInfo
+
+payment 
+    paymentID
+    orderId
+    userId

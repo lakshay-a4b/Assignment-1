@@ -1,29 +1,77 @@
 import {
   getCartByUserId,
-  saveCart
+  createOrUpdateCart,
+  updateCartProducts,deleteCart
 } from '../repositories/CartRepository.js';
 
-export const addToCartService = (userId, productId, quantity) => {
-  const cart = getCartByUserId(userId);
-  const existingItem = cart.find(item => item.productId === productId);
+export const addToCartService = async (userId, product) => {
+  try {
+    const { productId, quantity } = product;
+    const cart = await getCartByUserId(userId);
 
-  if (existingItem) {
-    existingItem.quantity += quantity;
-  } else {
-    cart.push({ productId, quantity });
+    let updatedProducts = [];
+    
+    if (cart) {
+      updatedProducts = [...cart.productInfo];
+      const existingProductIndex = updatedProducts.findIndex(
+        p => p.productId === productId
+      );
+      
+      if (existingProductIndex >= 0) {
+        updatedProducts[existingProductIndex].quantity += quantity;
+      } else {
+        updatedProducts.push({ productId, quantity });
+      }
+    } else {
+      updatedProducts = [{ productId, quantity }];
+    }
+
+    return await createOrUpdateCart(userId, updatedProducts);
+  } catch (error) {
+    console.error('Error in addToCartService:', error);
+    throw error;
   }
-
-  saveCart(userId, cart);
-  return cart;
 };
 
-export const getCartService = (userId) => {
-  return getCartByUserId(userId);
+export const removeFromCartService = async (userId, productId) => {
+  try {
+    const cart = await getCartByUserId(userId);
+    if (!cart) throw new Error('Cart not found');
+
+    let updatedProducts = [...cart.productInfo];
+    const productIndex = updatedProducts.findIndex(
+      item => item.productId === productId
+    );
+
+    if (productIndex === -1) throw new Error('Product not found in cart');
+
+    if (updatedProducts[productIndex].quantity > 1) {
+      updatedProducts[productIndex].quantity -= 1;
+    } else {
+      updatedProducts.splice(productIndex, 1);
+    }
+
+    return await updateCartProducts(userId, updatedProducts);
+  } catch (error) {
+    console.error('Error in removeFromCartService:', error);
+    throw error;
+  }
 };
 
-export const removeFromCartService = (userId, productId) => {
-  const cart = getCartByUserId(userId);
-  const updatedCart = cart.filter(item => item.productId !== productId);
-  saveCart(userId, updatedCart);
-  return updatedCart;
+export const getCartService = async (userId) => {
+  try {
+    return await getCartByUserId(userId);
+  } catch (error) {
+    console.error('Error in getCartService:', error);
+    throw error;
+  }
+};
+
+export const clearUserCart = async (userId) => {
+  try {
+    return await deleteCart(userId);
+  } catch (error) {
+    console.error('Error in clearUserCart:', error);
+    throw error;
+  }
 };
