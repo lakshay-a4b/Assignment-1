@@ -9,10 +9,10 @@ export const addToCart = async (req, res) => {
   const userId = req.user.userId;
   const { productId, quantity, price } = req.body;
 
-  if (!productId || !quantity) {
+  if (!productId || !quantity || quantity <= 0 || !price || price <= 0) {
     return res.status(400).json({ 
       success: false,
-      message: 'Product ID and quantity are required' 
+      message: 'Valid product ID, quantity, and price are required' 
     });
   }
 
@@ -33,9 +33,9 @@ export const addToCart = async (req, res) => {
     });
   } catch (error) {
     console.error('Error adding to cart:', error);
-    return res.status(500).json({ 
+    return res.status(error.status || 500).json({ 
       success: false,
-      message: error.message || 'Internal server error' 
+      message: error.message || 'Failed to add product to cart' 
     });
   }
 };
@@ -51,9 +51,9 @@ export const getCart = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching cart:', error);
-    return res.status(500).json({ 
+    return res.status(error.status || 500).json({ 
       success: false,
-      message: 'Internal server error' 
+      message: error.message || 'Failed to fetch cart' 
     });
   }
 };
@@ -78,9 +78,9 @@ export const removeFromCart = async (req, res) => {
     });
   } catch (error) {
     console.error('Error removing from cart:', error);
-    return res.status(500).json({ 
+    return res.status(error.status || 500).json({ 
       success: false,
-      message: 'Internal server error' 
+      message: error.message || 'Failed to remove product from cart' 
     });
   }
 };

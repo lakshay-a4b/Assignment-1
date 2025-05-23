@@ -1,15 +1,13 @@
 import pool from '../config/db.js';
 
 export const getCartByUserId = async (userId) => {
-  
   try {
     const query = 'SELECT * FROM cart WHERE "userId" = $1';
     const { rows } = await pool.query(query, [userId]);
-    
     return rows[0] || null;
   } catch (error) {
-    console.error('Error getting cart:', error);
-    throw error;
+    console.error(`Database error in getCartByUserId (userId: ${userId}):`, error);
+    throw new Error("Failed to retrieve cart from database");
   }
 };
 
@@ -27,8 +25,8 @@ export const createOrUpdateCart = async (userId, productInfo) => {
     const { rows } = await pool.query(query, [userId, productInfo]);
     return rows[0];
   } catch (error) {
-    console.error('Error saving cart:', error);
-    throw error;
+    console.error(`Database error in createOrUpdateCart (userId: ${userId}):`, error);
+    throw new Error("Failed to create or update cart");
   }
 };
 
@@ -45,8 +43,8 @@ export const updateCartProducts = async (userId, productInfo) => {
     const { rows } = await pool.query(query, [productInfo, userId]);
     return rows[0];
   } catch (error) {
-    console.error('Error updating cart:', error);
-    throw error;
+    console.error(`Database error in updateCartProducts (userId: ${userId}):`, error);
+    throw new Error("Failed to update cart products");
   }
 };
 
@@ -55,9 +53,8 @@ export const deleteCart = async (userId) => {
     const query = 'DELETE FROM cart WHERE "userId" = $1 RETURNING *';
     const { rows } = await pool.query(query, [userId]);
     return rows[0] || null;
+  } catch (error) {
+    console.error(`Database error in deleteCart (userId: ${userId}):`, error);
+    throw new Error("Failed to delete cart");
   }
-  catch (error) {
-    console.error('Error clearing cart:', error);
-    throw error;
-  }
-}
+};
