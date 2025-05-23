@@ -13,14 +13,14 @@ export const findByUserId = async (userId) => {
 
 export const createUser = async (user) => {
   try {
-    const { userID , email, password } = user;
+    const { userId , email, password } = user;
     
     const query = `
       INSERT INTO users ("userId", email, password)
       VALUES ($1, $2, $3)
       RETURNING *
     `;
-    const { rows } = await pool.query(query, [userID, email, password]);
+    const { rows } = await pool.query(query, [userId, email, password]);
     return rows[0];
   } catch (error) {
     console.error('Error creating user:', error);
