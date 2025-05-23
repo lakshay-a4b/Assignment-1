@@ -48,10 +48,14 @@ export const updateCartProducts = async (userId, productInfo) => {
   }
 };
 
-export const deleteCart = async (userId) => {
+export const deleteCart = async (userId, client = null) => {
   try {
     const query = 'DELETE FROM cart WHERE "userId" = $1 RETURNING *';
-    const { rows } = await pool.query(query, [userId]);
+    
+    const { rows } = client 
+      ? await client.query(query, [userId])
+      : await pool.query(query, [userId]);
+    
     return rows[0] || null;
   } catch (error) {
     console.error(`Database error in deleteCart (userId: ${userId}):`, error);
