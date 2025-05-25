@@ -1,11 +1,11 @@
 import { Pool } from "pg";
 
 const pool = new Pool({
-    user: "youruser",
-    password: "yourpass",
+    user: "postgres",
+    password: "1234",
     host: "localhost",
     port: "5432",
-    database: "yourdbname",
+    database: "postgres",
 });
 
 pool.on('connect', () => console.log('PostgreSQL connected'));
