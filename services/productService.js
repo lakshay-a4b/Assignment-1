@@ -1,19 +1,39 @@
-import * as ProductRepository from '../repositories/ProductRepository.js';
+import * as ProductRepository from "../repositories/ProductRepository.js";
+import redisClient from "../config/redisClient.js";
 
 export const fetchPaginatedProducts = async (page = 1, limit = 5) => {
   try {
     const offset = (page - 1) * limit;
+    const cacheKey = `product:${page}:${limit}`;
+
+    const cachedProduct = await redisClient.get(cacheKey);
+    if (cachedProduct) {
+      return JSON.parse(cachedProduct);
+    }
 
     const [products, total] = await Promise.all([
       ProductRepository.getPaginatedProducts(limit, offset),
-      ProductRepository.getTotalProductCount()
+      ProductRepository.getTotalProductCount(),
     ]);
+
+    if (products) {
+      await redisClient.setEx(
+        cacheKey,
+        3600,
+        JSON.stringify({
+          products,
+          total,
+          page,
+          limit,
+        })
+      );
+    }
 
     return {
       products,
       total,
       page,
-      limit
+      limit,
     };
   } catch (error) {
     console.error("Service error: fetchPaginatedProducts failed:", error);
@@ -33,6 +53,8 @@ export const fetchProductById = async (id) => {
 
 export const createProduct = async (product) => {
   try {
+    const cacheKey = `product:1:2`;
+    await redisClient.del(cacheKey);
     return await ProductRepository.createProduct(product);
   } catch (error) {
     console.error("Error in createProduct:", error);

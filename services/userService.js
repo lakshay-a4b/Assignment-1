@@ -2,7 +2,7 @@ import * as userRepo from '../repositories/UserRepository.js';
 import { hashPassword, comparePasswords } from '../utils/hashUtil.js';
 import { generateToken } from '../utils/tokenUtil.js';
 
-export const signup = async ({ userId, password, email }) => {
+export const signup = async ({ userId, password, email, role }) => {
   
   try {
     const existingUser = await userRepo.findByUserId(userId);
@@ -12,8 +12,8 @@ export const signup = async ({ userId, password, email }) => {
       throw error;
     }
 
-    const hashedPassword = await hashPassword(password);
-    const newUser = { userId, email, password: hashedPassword };
+    const hashedPassword = hashPassword(password);
+    const newUser = { userId, email, password: hashedPassword, role };
     await userRepo.createUser(newUser);
 
     return { message: 'User registered successfully' };
@@ -35,14 +35,14 @@ export const login = async ({ userId, password }) => {
       throw error;
     }
 
-    const isPasswordValid = await comparePasswords(password, user.password);
+    const isPasswordValid = comparePasswords(password, user.password);
     if (!isPasswordValid) {
       const error = new Error('Invalid credentials');
       error.status = 401;
       throw error;
     }
 
-    const token = generateToken({ userId: user.userId });
+    const token = generateToken({ userId: user.userId, role: user.role });
     return { message: 'Login successful', token };
   } catch (err) {
     console.error('Login Error:', err);

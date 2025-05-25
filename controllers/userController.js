@@ -2,13 +2,13 @@ import { signup, login, deleteUserService, updateUserService } from '../services
 
 export const signupUser = async (req, res) => {
   try {
-    const { userId, password, email } = req.body;
+    const { userId, password, email, role } = req.body;
 
-    if (!userId || !password || !email) {
+    if (!userId || !password || !email || !role) {
       return res.status(400).json({ message: 'userId, password, and email are required' });
     }
 
-    const result = await signup({ userID: userId, password, email });
+    const result = await signup({ userId: userId, password, email, role });
     res.status(201).json(result);
   } catch (error) {
     console.error('Signup Controller Error:', error);
@@ -20,7 +20,7 @@ export const loginUser = async (req, res) => {
   try {
     const { userId, password } = req.body;
 
-    if (!userId || !password) {
+    if (!userId || !password ) {
       return res.status(400).json({ message: 'userId and password are required' });
     }
 

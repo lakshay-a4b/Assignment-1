@@ -13,6 +13,7 @@ export const up = (pgm) => {
     userId: { type: "varchar(100)", primaryKey: true, unique: true },
     email: { type: "varchar(100)", notNull: true, unique: true },
     password: { type: "varchar(100)", notNull: true },
+    role: { type: "varchar(50)", notNull: true, default: "user" },
     createdAt: { type: "timestamp", default: pgm.func("current_timestamp") },
   });
 };
