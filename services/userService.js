@@ -1,6 +1,7 @@
 import * as userRepo from '../repositories/UserRepository.js';
 import { hashPassword, comparePasswords } from '../utils/hashUtil.js';
 import { generateToken } from '../utils/tokenUtil.js';
+import { logEventToProducer } from '../utils/logger.js';
 
 export const signup = async ({ userId, password, email, role }) => {
   
@@ -15,6 +16,11 @@ export const signup = async ({ userId, password, email, role }) => {
     const hashedPassword = hashPassword(password);
     const newUser = { userId, email, password: hashedPassword, role };
     await userRepo.createUser(newUser);
+
+    await logEventToProducer('User Signup', 'user_123', {
+      date: new Date().toISOString(),
+      userId: newUser.userId,
+    });
 
     return { message: 'User registered successfully' };
   } catch (err) {
