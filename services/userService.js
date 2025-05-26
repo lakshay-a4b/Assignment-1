@@ -19,6 +19,10 @@ export const signup = async ({ userId, password, email, role }) => {
 
     await logEventToProducer('User Signup', newUser.userId, {
       date: new Date().toISOString(),
+      name: newUser.name || 'New User',
+      email: newUser.email,
+      role: newUser.role,
+      action: 'signup',
       userId: newUser.userId,
     });
 
