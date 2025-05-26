@@ -17,7 +17,7 @@ export const signup = async ({ userId, password, email, role }) => {
     const newUser = { userId, email, password: hashedPassword, role };
     await userRepo.createUser(newUser);
 
-    await logEventToProducer('User Signup', 'user_123', {
+    await logEventToProducer('User Signup', newUser.userId, {
       date: new Date().toISOString(),
       userId: newUser.userId,
     });
